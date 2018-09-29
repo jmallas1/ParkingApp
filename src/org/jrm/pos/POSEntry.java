@@ -9,9 +9,12 @@ import java.io.InputStreamReader;
 
 public class POSEntry implements POSMachine
 {
+    private Boolean debug = true;
     private Garage location;
     private Boolean done = false;
-    String userChoice;
+
+    private ParkingTicket pt;
+    private String userChoice;
 
     public POSEntry(Garage someGarage)
     {
@@ -24,7 +27,14 @@ public class POSEntry implements POSMachine
             userChoice = this.waitForInput();
             if (Integer.parseInt(userChoice) == 1)
             {
-                ParkingTicket pt = new ParkingTicket();
+                if(debug)
+                {
+                    pt = new ParkingTicket("2018-09-29 8:47");
+                }
+                else
+                {
+                    pt = new ParkingTicket();
+                }
                 location.pushTicket(pt);
                 displayBanner();
             }

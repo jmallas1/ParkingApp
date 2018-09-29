@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class FileInput
 {
-    String filePath;
+    public String filePath;
     private BufferedReader in = null;
 
     /**
@@ -30,6 +30,7 @@ public class FileInput
         catch (FileNotFoundException e)
         {
             System.out.println("File: " + filePath + " not found");
+            this.filePath = null;
         }
     }
 

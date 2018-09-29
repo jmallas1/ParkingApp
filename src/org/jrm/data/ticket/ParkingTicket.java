@@ -17,6 +17,12 @@ public class ParkingTicket
         this.timeIn = new Date();
     }
 
+    public ParkingTicket(String sTimeIn)
+    {
+        this.ticketID = UUID.randomUUID().toString();
+        this.timeIn = this.stringDateToDate(sTimeIn);
+    }
+
     public ParkingTicket(String ticketID, String sTimeIn)
     {
         /* use this as you're reading in the current "garage residents" */

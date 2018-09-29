@@ -53,7 +53,7 @@ public class Garage
             records += tickets.get(key).toString() + "\n";
         }
 
-        fo.writeFile(records);
+        fo.writeFile(records.trim());
     }
 
     public void loadTickets()
@@ -61,7 +61,7 @@ public class Garage
         String line;
         String[] workingArray = new String[1];
         FileInput fi = new FileInput("tickets-" + this.dataFileName + ".dat");
-        if(fi != null)
+        if(fi.filePath != null)
         {
             while ((line = fi.readLine()) != null)
             {
