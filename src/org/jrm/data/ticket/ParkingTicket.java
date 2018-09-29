@@ -109,4 +109,22 @@ public class ParkingTicket
     {
         return ticketID + ", " + dateToString(timeIn);
     }
+
+    /* getters and setters */
+
+    public String getTicketID() {
+        return ticketID;
+    }
+
+    public void setTicketID(String ticketID) {
+        this.ticketID = ticketID;
+    }
+
+    public Date getTimeIn() {
+        return timeIn;
+    }
+
+    public void setTimeIn(Date timeIn) {
+        this.timeIn = timeIn;
+    }
 }
