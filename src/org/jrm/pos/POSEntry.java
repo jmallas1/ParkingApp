@@ -1,11 +1,13 @@
 package org.jrm.pos;
 
 import org.jrm.data.garage.Garage;
-import org.jrm.data.ticket.ParkingTicket;
+import org.jrm.data.ticket.*;
+import org.jrm.util.TimeUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class POSEntry implements POSMachine
 {
@@ -29,12 +31,11 @@ public class POSEntry implements POSMachine
             {
                 if(debug)
                 {
-                    pt = new ParkingTicket("2018-09-29 8:47");
+                    Date dt1 = TimeUtils.stringDateToDate("2018-09-29 07:00");
+                    Date dt2 = TimeUtils.stringDateToDate("2018-09-29 12:00");
+                    pt = new ParkingTicket(TimeUtils.randomTimeString(dt1, dt2));
                 }
-                else
-                {
-                    pt = new ParkingTicket();
-                }
+                else { pt = new ParkingTicket(); }
                 location.pushTicket(pt);
                 displayBanner();
             }

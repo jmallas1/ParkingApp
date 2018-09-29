@@ -3,7 +3,6 @@ package org.jrm.data.garage;
 import org.jrm.data.ticket.ParkingTicket;
 import org.jrm.io.FileInput;
 import org.jrm.io.FileOutput;
-import org.jrm.pos.POSEntry;
 
 import java.util.HashMap;
 

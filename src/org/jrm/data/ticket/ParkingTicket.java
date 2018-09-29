@@ -1,7 +1,7 @@
 package org.jrm.data.ticket;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.jrm.util.TimeUtils;
+
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -14,48 +14,38 @@ public class ParkingTicket
     public ParkingTicket()
     {
         this.ticketID = UUID.randomUUID().toString();
-        this.timeIn = new Date();
+        this.timeIn = getTimeStamp();
     }
 
     public ParkingTicket(String sTimeIn)
     {
         this.ticketID = UUID.randomUUID().toString();
-        this.timeIn = this.stringDateToDate(sTimeIn);
+        this.timeIn = TimeUtils.stringDateToDate(sTimeIn);
     }
 
     public ParkingTicket(String ticketID, String sTimeIn)
     {
         /* use this as you're reading in the current "garage residents" */
 
-        this.timeIn = this.stringDateToDate(sTimeIn);
+        this.timeIn = TimeUtils.stringDateToDate(sTimeIn);
 
         this.ticketID = ticketID;
+    }
+
+    public Date getTimeStamp()
+    {
+        return new Date();
     }
 
     public Float getCharge(Date timeOut)
     {
         Float totalCharge;
 
-        Long timeDif = timeOut.getTime() - this.timeIn.getTime();
-
-        Long dayDif = TimeUnit.MILLISECONDS.toDays(timeDif);
-        Long remainingHours = timeDif - TimeUnit.DAYS.toMillis(dayDif);
-        Long hourDif = TimeUnit.MILLISECONDS.toHours(remainingHours);
-        Long remainingMinutes = remainingHours - TimeUnit.HOURS.toMillis(hourDif);
-        Long minuteDif = TimeUnit.MILLISECONDS.toMinutes(remainingMinutes);
-
-        if(dayDif > 0)
-        {
-            hourDif += (24 * dayDif);
-        }
-        if(minuteDif > 0)
-        {
-            hourDif++;
-        }
+        Integer hourDif = getHours(timeOut);
 
         if(hourDif <= 3)
         {
-            hourDif = 0l;
+            hourDif = 0;
         }
         else
         {
@@ -74,46 +64,36 @@ public class ParkingTicket
         }
     }
 
+    private Integer getHours(Date timeOut)
+    {
+        Long timeDif = timeOut.getTime() - this.timeIn.getTime();
+
+        Long dayDif = TimeUnit.MILLISECONDS.toDays(timeDif);
+        Long remainingHours = timeDif - TimeUnit.DAYS.toMillis(dayDif);
+        Long hourDif = TimeUnit.MILLISECONDS.toHours(remainingHours);
+        Long remainingMinutes = remainingHours - TimeUnit.HOURS.toMillis(hourDif);
+        Long minuteDif = TimeUnit.MILLISECONDS.toMinutes(remainingMinutes);
+
+        if(dayDif > 0)
+        {
+            hourDif += (24 * dayDif);
+        }
+        if(minuteDif > 0)
+        {
+            hourDif++;
+        }
+
+        return hourDif.intValue();
+    }
     public Float getCharge(String sTimeOut)
     {
-        return this.getCharge(this.stringDateToDate(sTimeOut));
-    }
-
-    public static Float noTicket()
-    {
-        return 25f;
-    }
-
-    private Date stringDateToDate(String sDate)
-    {
-        Date someDate = null;
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        try
-        {
-            someDate = sdf.parse(sDate);
-        }
-        catch (ParseException e)
-        {
-            System.out.println("Unable to parse date in current format.");
-            System.out.println("Expected: yyyy-MM-dd HH:mm");
-            System.out.println("Actual: " + sDate);
-            e.printStackTrace();
-        }
-
-        return someDate;
-    }
-
-    private String dateToString(Date sDate)
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return sdf.format(sDate);
+        return this.getCharge(TimeUtils.stringDateToDate(sTimeOut));
     }
 
     @Override
     public String toString()
     {
-        return ticketID + ", " + dateToString(timeIn);
+        return ticketID + ", " + TimeUtils.dateToString(timeIn);
     }
 
     /* getters and setters */
