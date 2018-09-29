@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Garage
 {
     private Integer occupancy = 0;
-    private Integer capacity;
+    private Integer capacity = 500;
     private String name;
     private String dataFileName;
 
@@ -66,10 +66,20 @@ public class Garage
             {
                 workingArray = line.split(", ");
                 pushTicket(new ParkingTicket(workingArray[0], workingArray[1]));
+                addCar();
             }
         }
     }
 
+    public void addCar()
+    {
+        this.occupancy++;
+    }
+
+    public void removeCar()
+    {
+        this.occupancy--;
+    }
     /* Getters and setters */
 
     public Integer getOccupancy() {
