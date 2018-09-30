@@ -12,6 +12,8 @@ public class Garage
     private Integer capacity = 500;
     private String name;
     private String dataFileName;
+    private Float ledger = 0f;
+    private Integer lostTickets = 0;
 
     private HashMap<String, ParkingTicket> tickets;
 
@@ -80,6 +82,22 @@ public class Garage
     {
         this.occupancy--;
     }
+
+    public void addToLedger(Float fee)
+    {
+        ledger += fee;
+    }
+
+    public void lostTicket()
+    {
+        lostTickets++;
+    }
+
+    public String dailyReport()
+    {
+        return new String();
+    }
+
     /* Getters and setters */
 
     public Integer getOccupancy() {

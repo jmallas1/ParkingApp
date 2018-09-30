@@ -5,6 +5,7 @@ import org.jrm.data.ticket.ParkingTicket;
 import org.jrm.util.POSUtils;
 import org.jrm.util.TimeUtils;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -25,7 +26,6 @@ public class POSExit
     {
         this.location = location;
 
-        displayBanner();
         while(!done)
         {
             displayBanner();
@@ -48,18 +48,20 @@ public class POSExit
                 outTime = new Date();
             }
 
+            billDetails = new HashMap<String, String>();
+
             if (Integer.parseInt(userChoice) == 1)
             {
                 System.out.println("Enter Ticket ID");
                 System.out.println("\n => ");
                 userChoice = POSUtils.waitForInput();
-                billDetails = new HashMap<String, String>();
 
                 if(location.getTickets().containsKey(userChoice))
                 {
                     pt = location.getTickets().get(userChoice);
                     location.popTicket(pt);
                     location.removeCar();
+                    billDetails.put("id", pt.getTicketID());
                     billDetails.put("charge", pt.getCharge(outTime).toString());
                     billDetails.put("in", TimeUtils.dateToString(pt.getTimeIn()));
                     billDetails.put("out", TimeUtils.dateToString(outTime));
@@ -75,11 +77,13 @@ public class POSExit
             }
             else if (Integer.parseInt(userChoice) == 2)
             {
-                billDetails.put("charge", "$25.00");
+                billDetails.put("charge", "25.00");
+                location.lostTicket();
             }
 
             if(billDetails.get("charge") != "nil")
             {
+                location.addToLedger(Float.parseFloat(billDetails.get("charge")));
                 displayBanner();
                 System.out.println(generateBill(billDetails));
             }
@@ -97,15 +101,18 @@ public class POSExit
     {
         String rString = new String();
 
+        rString += "Receipt for vehicle: ";
+
         if(details.containsKey("in"))
         {
+            rString += details.get("id") + "\n";
             rString += TimeUtils.getHours(TimeUtils.stringDateToDate(details.get("in")), TimeUtils.stringDateToDate(details.get("out"))).toString();
             rString += " hours parked: \n";
             rString += details.get("in") + " - " + details.get("out") + "\n";
         }
         else
         {
-            rString += "Lost Ticket:\n";
+            rString += "\n\nLost Ticket:\n";
         }
 
         rString += "$" + details.get("charge");
@@ -117,6 +124,11 @@ public class POSExit
 
     public void displayBanner()
     {
+        for (int i = 1; i < 100; i++)
+        {
+            System.out.print("\n");
+        }
+
         System.out.println("Thank you for visiting " + this.location.getName());
         System.out.println("=====================================");
 
