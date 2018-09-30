@@ -1,15 +1,13 @@
 package org.jrm.pos;
 
 import org.jrm.data.garage.Garage;
-import org.jrm.data.ticket.*;
+import org.jrm.data.ticket.ParkingTicket;
+import org.jrm.util.GarageUtils;
 import org.jrm.util.TimeUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Date;
 
-public class POSEntry implements POSMachine
+public class POSEntry
 {
     private Boolean debug = true;
     private Garage location;
@@ -26,13 +24,14 @@ public class POSEntry implements POSMachine
 
         while(!done)
         {
-            userChoice = this.waitForInput();
+            userChoice = GarageUtils.waitForInput();
+
             if (Integer.parseInt(userChoice) == 1)
             {
                 if(debug)
                 {
-                    Date dt1 = TimeUtils.stringDateToDate("2018-09-29 07:00");
-                    Date dt2 = TimeUtils.stringDateToDate("2018-09-29 12:00");
+                    Date dt1 = TimeUtils.stringDateToDate("2018-09-30 07:00");
+                    Date dt2 = TimeUtils.stringDateToDate("2018-09-30 12:00");
                     pt = new ParkingTicket(TimeUtils.randomTimeString(dt1, dt2));
                 }
                 else { pt = new ParkingTicket(); }
@@ -55,22 +54,6 @@ public class POSEntry implements POSMachine
         }
     }
 
-    private String waitForInput()
-    {
-        String rString = new String();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        try {
-            rString = br.readLine();
-        } catch (IOException e) {
-            System.out.println("Exception thrown in waitForInput");
-            System.out.println(e.getMessage());
-        }
-
-        return rString;
-    }
-
-    @Override
     public void displayBanner()
     {
         System.out.println("Welcome to " + this.location.getName());

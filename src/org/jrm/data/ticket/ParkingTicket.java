@@ -1,10 +1,8 @@
 package org.jrm.data.ticket;
 
 import org.jrm.util.TimeUtils;
-
 import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class ParkingTicket
 {
@@ -41,7 +39,7 @@ public class ParkingTicket
     {
         Float totalCharge;
 
-        Integer hourDif = getHours(timeOut);
+        Integer hourDif = TimeUtils.getHours(this.timeIn, timeOut);
 
         if(hourDif <= 3)
         {
@@ -64,27 +62,6 @@ public class ParkingTicket
         }
     }
 
-    private Integer getHours(Date timeOut)
-    {
-        Long timeDif = timeOut.getTime() - this.timeIn.getTime();
-
-        Long dayDif = TimeUnit.MILLISECONDS.toDays(timeDif);
-        Long remainingHours = timeDif - TimeUnit.DAYS.toMillis(dayDif);
-        Long hourDif = TimeUnit.MILLISECONDS.toHours(remainingHours);
-        Long remainingMinutes = remainingHours - TimeUnit.HOURS.toMillis(hourDif);
-        Long minuteDif = TimeUnit.MILLISECONDS.toMinutes(remainingMinutes);
-
-        if(dayDif > 0)
-        {
-            hourDif += (24 * dayDif);
-        }
-        if(minuteDif > 0)
-        {
-            hourDif++;
-        }
-
-        return hourDif.intValue();
-    }
     public Float getCharge(String sTimeOut)
     {
         return this.getCharge(TimeUtils.stringDateToDate(sTimeOut));
