@@ -2,7 +2,7 @@ package org.jrm.pos;
 
 import org.jrm.data.garage.Garage;
 import org.jrm.data.ticket.ParkingTicket;
-import org.jrm.util.GarageUtils;
+import org.jrm.util.POSUtils;
 import org.jrm.util.TimeUtils;
 
 import java.util.Date;
@@ -35,7 +35,7 @@ public class POSExit
             System.out.println("\n");
             System.out.printf("=> ");
 
-            userChoice = GarageUtils.waitForInput();
+            userChoice = POSUtils.waitForInput();
 
             displayBanner();
 
@@ -52,7 +52,7 @@ public class POSExit
             {
                 System.out.println("Enter Ticket ID");
                 System.out.println("\n => ");
-                userChoice = GarageUtils.waitForInput();
+                userChoice = POSUtils.waitForInput();
                 billDetails = new HashMap<String, String>();
 
                 if(location.getTickets().containsKey(userChoice))

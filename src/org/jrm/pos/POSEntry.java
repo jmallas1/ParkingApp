@@ -2,7 +2,7 @@ package org.jrm.pos;
 
 import org.jrm.data.garage.Garage;
 import org.jrm.data.ticket.ParkingTicket;
-import org.jrm.util.GarageUtils;
+import org.jrm.util.POSUtils;
 import org.jrm.util.TimeUtils;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public class POSEntry
 
         while(!done)
         {
-            userChoice = GarageUtils.waitForInput();
+            userChoice = POSUtils.waitForInput();
 
             if (Integer.parseInt(userChoice) == 1)
             {
