@@ -16,6 +16,8 @@ public class POSEntry
     private ParkingTicket pt;
     private String userChoice;
 
+    // TODO: CLEAN UP & GEN TESTS
+
     public POSEntry(Garage someGarage)
     {
         this.location = someGarage;

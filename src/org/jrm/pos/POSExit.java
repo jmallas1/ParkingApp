@@ -48,37 +48,15 @@ public class POSExit
                 outTime = new Date();
             }
 
-            billDetails = new HashMap<>();
-
-            if (Integer.parseInt(userChoice) == 1)
+            switch (Integer.parseInt(userChoice))
             {
-                System.out.println("Enter Ticket ID");
-                System.out.println("\n => ");
-                userChoice = POSUtils.waitForInput();
-
-                if(location.getTickets().containsKey(userChoice))
-                {
-                    pt = location.getTickets().get(userChoice);
-                    location.popTicket(pt);
-                    billDetails.put("id", pt.getTicketID());
-                    billDetails.put("charge", pt.getCharge(outTime).toString());
-                    billDetails.put("in", TimeUtils.dateToString(pt.getTimeIn()));
-                    billDetails.put("out", TimeUtils.dateToString(outTime));
-                }
-                else
-                {
-                    displayBanner();
-                    System.out.println("Unable to locate ticket.");
-                    System.out.println("Please check the number and try again.");
-                    billDetails.put("charge", "nil");
-                }
-
-            }
-            else if (Integer.parseInt(userChoice) == 2)
-            {
-                billDetails.put("charge", "25.00");
-                billDetails.put("id", "LOST");
-
+                case 1:
+                    billDetails = doTicketExit();
+                case 2:
+                    billDetails = doLostTicket();
+                case 3:
+                    location.closeGarage();
+                    System.exit(0);
             }
 
             if(billDetails.get("charge") != "nil")
@@ -132,5 +110,44 @@ public class POSExit
         System.out.println("Thank you for visiting " + this.location.getName());
         System.out.println("=====================================");
 
+    }
+
+    private HashMap doTicketExit()
+    {
+        HashMap bd = new HashMap();
+        System.out.println("Enter Ticket ID");
+        System.out.println("\n => ");
+        userChoice = POSUtils.waitForInput();
+
+        if(location.getTickets().containsKey(userChoice))
+        {
+            pt = location.getTickets().get(userChoice);
+            location.loadTickets();
+            location.popTicket(pt);
+            location.saveTickets();
+            bd.put("id", pt.getTicketID());
+            bd.put("charge", String.format("%.02f", pt.getCharge(outTime)));
+            bd.put("in", TimeUtils.dateToString(pt.getTimeIn()));
+            bd.put("out", TimeUtils.dateToString(outTime));
+        }
+        else
+        {
+            displayBanner();
+            System.out.println("Unable to locate ticket.");
+            System.out.println("Please check the number and try again.");
+            bd.put("charge", "nil");
+        }
+
+        return bd;
+    }
+
+    private HashMap doLostTicket()
+    {
+        HashMap bd = new HashMap();
+
+        bd.put("charge", "25.00");
+        bd.put("id", "LOST");
+
+        return bd;
     }
 }

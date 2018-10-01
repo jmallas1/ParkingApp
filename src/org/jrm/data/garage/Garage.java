@@ -8,6 +8,8 @@ import org.jrm.io.FileOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// TODO: CLEAN UP AND WRITE TESTS
+
 public class Garage
 {
     private String name;
@@ -30,6 +32,44 @@ public class Garage
     {
         String rString;
         rString = this.name.toLowerCase().replaceAll("\\W", "");
+        return rString;
+    }
+
+    public String genDailyReport()
+    {
+        String rString = new String();
+        Float totalReceipts = 0f;
+        Float totalTickets = 0f;
+        Float totalFee = 0f;
+        Integer tickets = 0;
+        Integer lost = 0;
+
+        rString += this.name + "\n";
+        for (int x = 1; x<=this.name.length(); x++)
+        {
+            rString += "=";
+        }
+
+        rString += "\nActivity to date:\n\n";
+
+        for (Transaction txn : ledger)
+        {
+            totalReceipts += txn.getCharge();
+            if(txn.getCustID().equals("LOST"))
+            {
+                lost++;
+                totalFee+=txn.getCharge();
+            }
+            else
+            {
+                tickets++;
+                totalTickets+=txn.getCharge();
+            }
+        }
+
+        rString += "$" + String.format("%.02f", totalTickets) + " was collected for " + tickets + " checkins\n\n";
+        rString += "$" + String.format("%.02f", totalFee) + " was collected for " + lost + " lost tickets\n\n\n";
+        rString += "$" + String.format("%.02f", totalReceipts) + " was collected overall.\n";
         return rString;
     }
 
@@ -113,44 +153,6 @@ public class Garage
                 ledger.add(new Transaction(workingArray[0], workingArray[1], Float.parseFloat(workingArray[2])));
             }
         }
-    }
-
-    public String genDailyReport()
-    {
-        String rString = new String();
-        Float totalReceipts = 0f;
-        Float totalTickets = 0f;
-        Float totalFee = 0f;
-        Integer tickets = 0;
-        Integer lost = 0;
-
-        rString += this.name + "\n";
-        for (int x = 1; x<=this.name.length(); x++)
-        {
-            rString += "=";
-        }
-
-        rString += "\nActivity to date:\n\n";
-
-        for (Transaction txn : ledger)
-        {
-            totalReceipts += txn.getCharge();
-            if(txn.getCustID().equals("LOST"))
-            {
-                lost++;
-                totalFee+=txn.getCharge();
-            }
-            else
-            {
-                tickets++;
-                totalTickets+=txn.getCharge();
-            }
-        }
-
-        rString += "$" + String.format("%.02f", totalTickets) + " was collected for " + tickets + " checkins\n\n";
-        rString += "$" + String.format("%.02f", totalFee) + " was collected for " + lost + " lost tickets\n\n\n";
-        rString += "$" + String.format("%.02f", totalReceipts) + " was collected overall.\n";
-        return rString;
     }
 
     /* Getters and setters */
