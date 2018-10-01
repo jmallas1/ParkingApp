@@ -18,4 +18,16 @@ public class Transaction
     {
         return custID + ", " + txnType + ", " + charge;
     }
+
+    public String getTxnType() {
+        return txnType;
+    }
+
+    public Float getCharge() {
+        return charge;
+    }
+
+    public String getCustID() {
+        return custID;
+    }
 }
