@@ -2,10 +2,10 @@ package org.jrm.pos;
 
 import org.jrm.data.garage.Garage;
 import org.jrm.data.ticket.ParkingTicket;
+import org.jrm.data.transaction.Transaction;
 import org.jrm.util.POSUtils;
 import org.jrm.util.TimeUtils;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -48,7 +48,7 @@ public class POSExit
                 outTime = new Date();
             }
 
-            billDetails = new HashMap<String, String>();
+            billDetails = new HashMap<>();
 
             if (Integer.parseInt(userChoice) == 1)
             {
@@ -60,7 +60,6 @@ public class POSExit
                 {
                     pt = location.getTickets().get(userChoice);
                     location.popTicket(pt);
-                    location.removeCar();
                     billDetails.put("id", pt.getTicketID());
                     billDetails.put("charge", pt.getCharge(outTime).toString());
                     billDetails.put("in", TimeUtils.dateToString(pt.getTimeIn()));
@@ -78,12 +77,13 @@ public class POSExit
             else if (Integer.parseInt(userChoice) == 2)
             {
                 billDetails.put("charge", "25.00");
-                location.lostTicket();
+                billDetails.put("id", "LOST");
+
             }
 
             if(billDetails.get("charge") != "nil")
             {
-                location.addToLedger(Float.parseFloat(billDetails.get("charge")));
+                location.addToLedger(new Transaction(billDetails.get("id"), "txn", Float.parseFloat(billDetails.get("charge"))));
                 displayBanner();
                 System.out.println(generateBill(billDetails));
             }

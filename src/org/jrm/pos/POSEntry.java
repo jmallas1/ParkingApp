@@ -36,19 +36,12 @@ public class POSEntry
                 }
                 else { pt = new ParkingTicket(); }
                 location.pushTicket(pt);
-                location.addCar();
 
                 displayBanner();
             }
             else if (Integer.parseInt(userChoice) == 3)
             {
                 location.closeGarage();
-                done = true;
-            }
-
-            if(location.getOccupancy() >= location.getCapacity())
-            {
-                System.out.println("There are no available spots in the garage.");
                 done = true;
             }
         }

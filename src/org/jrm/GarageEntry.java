@@ -7,7 +7,7 @@ public class GarageEntry
 {
     public static void main(String[] args)
     {
-        Garage gar = new Garage(500, "Jared's Garage");
+        Garage gar = new Garage("Jared's Garage");
 
         POSEntry pe = new POSEntry(gar);
     }

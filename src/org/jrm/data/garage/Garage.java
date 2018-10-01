@@ -1,28 +1,28 @@
 package org.jrm.data.garage;
 
 import org.jrm.data.ticket.ParkingTicket;
+import org.jrm.data.transaction.Transaction;
 import org.jrm.io.FileInput;
 import org.jrm.io.FileOutput;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Garage
 {
-    private Integer occupancy = 0;
-    private Integer capacity = 500;
     private String name;
     private String dataFileName;
-    private Float ledger = 0f;
+    private ArrayList<Transaction> ledger;
     private Integer lostTickets = 0;
 
     private HashMap<String, ParkingTicket> tickets;
 
-    public Garage(Integer capacity, String name)
+    public Garage(String name)
     {
-        this.capacity = capacity;
         this.name = name;
         this.dataFileName = genDataFileName();
         this.tickets = new HashMap<String, ParkingTicket>();
+        this.ledger = new ArrayList();
         loadTickets();
     }
 
@@ -45,6 +45,27 @@ public class Garage
 
     public void closeGarage()
     {
+        saveTickets();
+    }
+
+    public void loadTickets()
+    {
+        String line;
+        String[] workingArray;
+        FileInput fi = new FileInput("tickets-" + this.dataFileName + ".dat");
+        if(fi.filePath != null)
+        {
+            while ((line = fi.readLine()) != null)
+            {
+                workingArray = line.split(", ");
+                pushTicket(new ParkingTicket(workingArray[0], workingArray[1]));
+
+            }
+        }
+    }
+
+    public void saveTickets()
+    {
         FileOutput fo = new FileOutput("tickets-" + this.dataFileName + ".dat");
         String records = new String();
 
@@ -57,64 +78,47 @@ public class Garage
         fo.writeFile(records.trim());
     }
 
-    public void loadTickets()
+    public void addToLedger(Transaction txn)
+    {
+        ledger.add(txn);
+        saveLedger();
+    }
+
+    public void saveLedger()
+    {
+        FileOutput fo = new FileOutput("ledger-" + this.dataFileName + ".dat");
+        String records = new String();
+
+        for (Transaction tnx : ledger)
+        {
+            records += tnx.toString() + "\n";
+        }
+
+        fo.writeFile(records.trim());
+    }
+
+    public void loadLedger()
     {
         String line;
-        String[] workingArray = new String[1];
-        FileInput fi = new FileInput("tickets-" + this.dataFileName + ".dat");
+        String[] workingArray;
+
+        FileInput fi = new FileInput("ledger-" + this.dataFileName + ".dat");
         if(fi.filePath != null)
         {
             while ((line = fi.readLine()) != null)
             {
                 workingArray = line.split(", ");
-                pushTicket(new ParkingTicket(workingArray[0], workingArray[1]));
-                addCar();
+                ledger.add(new Transaction(workingArray[0], workingArray[1], Float.parseFloat(workingArray[2])));
             }
         }
     }
 
-    public void addCar()
-    {
-        this.occupancy++;
-    }
-
-    public void removeCar()
-    {
-        this.occupancy--;
-    }
-
-    public void addToLedger(Float fee)
-    {
-        ledger += fee;
-    }
-
-    public void lostTicket()
-    {
-        lostTickets++;
-    }
-
-    public String dailyReport()
+    public String genDailyReport()
     {
         return new String();
     }
 
     /* Getters and setters */
-
-    public Integer getOccupancy() {
-        return occupancy;
-    }
-
-    public void setOccupancy(Integer occupancy) {
-        this.occupancy = occupancy;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
 
     public String getName() {
         return name;
