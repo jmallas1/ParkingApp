@@ -45,18 +45,4 @@ public class FileOutput
             System.out.println("File Write Error: " + filePath + " "  + e);
         }
     }
-
-    /**
-     * Closes file that is opened by constructor
-     */
-    public void fileClose() {
-        if (out != null) {
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 }
