@@ -8,8 +8,11 @@ import org.jrm.io.FileOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO: CLEAN UP AND WRITE TESTS
-
+/**
+ * Class model for a garage
+ * @author Jared Mallas
+ * @version 1.0
+ */
 public class Garage
 {
     private String name;
@@ -28,6 +31,10 @@ public class Garage
         loadTickets();
     }
 
+    /**
+     * Generate a string to be used to create data files (ex: ledger and ticket roster)
+     * @return String representation of this.name with all special characters and whitespace removed
+     */
     private String genDataFileName()
     {
         String rString;
@@ -35,6 +42,10 @@ public class Garage
         return rString;
     }
 
+    /**
+     * Generate a string of the "daily report" of garage specifics for printing.
+     * @return String containing the daily report for display
+     */
     public String genDailyReport()
     {
         String rString = new String();
@@ -73,16 +84,30 @@ public class Garage
         return rString;
     }
 
+    /**
+     * Add a ticket to the running ticket 'roster' in memory
+     * THIS IN-MEMORY ROSTER MAY BE PERSISTED TO DISK AT CERTAIN TIMES.
+     * @param pt Instance of org.jrm.ticket.ParkingTicket
+     */
     public void pushTicket(ParkingTicket pt)
     {
         this.tickets.put(pt.getTicketID(), pt);
     }
 
+    /**
+     * Remove a given ticket from the running ticket 'roster' in memory.
+     * THIS IN-MEMORY ROSTER MAY BE PERSISTED TO DISK AT CERTAIN TIMES.
+     * @param pt Instance of org.jrm.ticket.ParkingTicket
+     */
     public void popTicket(ParkingTicket pt)
     {
         this.tickets.remove(pt.getTicketID());
     }
 
+    /**
+     * Writes in memory ticket 'roster' to data file, loads data file representation
+     * of the garage 'ledger' into memory and generates a report based on ledger
+     */
     public void closeGarage()
     {
         saveTickets();
@@ -90,6 +115,9 @@ public class Garage
         System.out.println(genDailyReport());
     }
 
+    /**
+     * Loads data file ticket 'roster' into memory if file exists
+     */
     public void loadTickets()
     {
         String line;
@@ -106,6 +134,9 @@ public class Garage
         }
     }
 
+    /**
+     * Writes in-memory ticket 'roster' to a data file
+     */
     public void saveTickets()
     {
         FileOutput fo = new FileOutput("tickets-" + this.dataFileName + ".dat");
@@ -120,12 +151,19 @@ public class Garage
         fo.writeFile(records.trim());
     }
 
+    /**
+     * Adds a transaction to in memory ledger then persists ledger to data file
+     * @param txn instance of org.jrm.transaction.Transaction
+     */
     public void addToLedger(Transaction txn)
     {
         ledger.add(txn);
         saveLedger();
     }
 
+    /**
+     * Persists in-memory ledger to data file
+     */
     public void saveLedger()
     {
         FileOutput fo = new FileOutput("ledger-" + this.dataFileName + ".dat");
@@ -139,6 +177,9 @@ public class Garage
         fo.writeFile(records.trim());
     }
 
+    /**
+     * Loads in-memory ledger from data fiel
+     */
     public void loadLedger()
     {
         String line;
@@ -171,5 +212,10 @@ public class Garage
 
     public void setTickets(HashMap<String, ParkingTicket> tickets) {
         this.tickets = tickets;
+    }
+
+    public void setLedger(ArrayList<Transaction> al)
+    {
+        ledger = al;
     }
 }

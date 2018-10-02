@@ -1,5 +1,10 @@
 package org.jrm.data.transaction;
 
+/**
+ * Class model for a transaction
+ * @author Jared Mallas
+ * @version 1.0
+ */
 public class Transaction
 {
     private String txnType;
