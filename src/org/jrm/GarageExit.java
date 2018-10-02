@@ -10,5 +10,7 @@ public class GarageExit
         Garage gar = new Garage("Jared's Garage");
 
         POSExit pe = new POSExit(gar);
+
+        pe.startUp();
     }
 }

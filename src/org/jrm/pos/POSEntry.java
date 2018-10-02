@@ -16,8 +16,6 @@ public class POSEntry
     private ParkingTicket pt;
     private String userChoice;
 
-    // TODO: CLEAN UP & GEN TESTS
-
     public POSEntry(Garage someGarage)
     {
         this.location = someGarage;
@@ -37,6 +35,7 @@ public class POSEntry
                     pt = new ParkingTicket(TimeUtils.randomTimeString(dt1, dt2));
                 }
                 else { pt = new ParkingTicket(); }
+
                 location.pushTicket(pt);
 
                 displayBanner();

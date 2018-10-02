@@ -25,54 +25,6 @@ public class POSExit
     public POSExit(Garage location)
     {
         this.location = location;
-
-        while(!done)
-        {
-            displayBanner();
-            System.out.println("1 - Leave / receive bill");
-            System.out.println("\n");
-            System.out.println("2 - Lost ticket");
-            System.out.println("\n");
-            System.out.printf("=> ");
-
-            userChoice = POSUtils.waitForInput();
-
-            displayBanner();
-
-            if(debug)
-            {
-                outTime = TimeUtils.stringDateToDate(TimeUtils.randomTimeString(dt1, dt2));
-            }
-            else
-            {
-                outTime = new Date();
-            }
-
-            switch (Integer.parseInt(userChoice))
-            {
-                case 1:
-                    billDetails = doTicketExit();
-                case 2:
-                    billDetails = doLostTicket();
-                case 3:
-                    location.closeGarage();
-                    System.exit(0);
-            }
-
-            if(billDetails.get("charge") != "nil")
-            {
-                location.addToLedger(new Transaction(billDetails.get("id"), "txn", Float.parseFloat(billDetails.get("charge"))));
-                displayBanner();
-                System.out.println(generateBill(billDetails));
-            }
-
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
-        }
     }
 
     public String generateBill(HashMap<String, String> details)
@@ -149,5 +101,56 @@ public class POSExit
         bd.put("id", "LOST");
 
         return bd;
+    }
+
+    public void startUp()
+    {
+        while(!done)
+        {
+            displayBanner();
+            System.out.println("1 - Leave / receive bill");
+            System.out.println("\n");
+            System.out.println("2 - Lost ticket");
+            System.out.println("\n");
+            System.out.printf("=> ");
+
+            userChoice = POSUtils.waitForInput();
+
+            displayBanner();
+
+            if(debug)
+            {
+                outTime = TimeUtils.stringDateToDate(TimeUtils.randomTimeString(dt1, dt2));
+            }
+            else
+            {
+                outTime = new Date();
+            }
+
+            switch (Integer.parseInt(userChoice))
+            {
+                case 1:
+                    billDetails = doTicketExit();
+                case 2:
+                    billDetails = doLostTicket();
+                case 3:
+                    location.closeGarage();
+                    System.exit(0);
+            }
+
+            if(billDetails.get("charge") != "nil")
+            {
+                location.addToLedger(new Transaction(billDetails.get("id"), "txn", Float.parseFloat(billDetails.get("charge"))));
+                displayBanner();
+                System.out.println(generateBill(billDetails));
+            }
+
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
     }
 }
