@@ -4,6 +4,11 @@ import org.jrm.util.TimeUtils;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Class model for a Parking ticket at a parking garage
+ * @author Jared Mallas
+ * @version 1.0
+ */
 public class ParkingTicket
 {
     private String ticketID;
@@ -35,6 +40,12 @@ public class ParkingTicket
         return new Date();
     }
 
+    /**
+     * Generate an appropriate charge for parking based on the difference between
+     * garage entry (defined at ticket creation) and garage exit
+     * @param timeOut Date / time (yyyy-MM-dd HH:mm) by which to calculate charge
+     * @return Float representing the total charge for parking
+     */
     public Float getCharge(Date timeOut)
     {
         Float totalCharge;
@@ -62,6 +73,12 @@ public class ParkingTicket
         }
     }
 
+    /**
+     * Overloaded method of getCharge(Date timeOut) allowing the passing of a correctly
+     * formatted string (yyyy-MM-dd HH:mm)
+     * @param sTimeOut Formatted (yyyy-MM-dd HH:mm) string representation of a date
+     * @return Float representing the total charge for parking
+     */
     public Float getCharge(String sTimeOut)
     {
         return this.getCharge(TimeUtils.stringDateToDate(sTimeOut));
