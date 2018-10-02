@@ -22,8 +22,8 @@ public class POSExit
     private ParkingTicket pt;
     private HashMap<String, String> billDetails;
     private Date outTime;
-    Date dt1 = TimeUtils.stringDateToDate("2018-09-30 13:00");
-    Date dt2 = TimeUtils.stringDateToDate("2018-09-30 23:00");
+    Date dt1 = TimeUtils.stringDateToDate("2018-10-03 13:00");
+    Date dt2 = TimeUtils.stringDateToDate("2018-10-03 23:00");
 
     String userChoice;
 

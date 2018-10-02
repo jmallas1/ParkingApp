@@ -57,8 +57,8 @@ public class POSEntry
             {
                 if(debug)
                 {
-                    Date dt1 = TimeUtils.stringDateToDate("2018-09-30 07:00");
-                    Date dt2 = TimeUtils.stringDateToDate("2018-09-30 12:00");
+                    Date dt1 = TimeUtils.stringDateToDate("2018-10-03 07:00");
+                    Date dt2 = TimeUtils.stringDateToDate("2018-10-03 12:00");
                     pt = new ParkingTicket(TimeUtils.randomTimeString(dt1, dt2));
                 }
                 else { pt = new ParkingTicket(); }
