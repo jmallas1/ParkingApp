@@ -9,6 +9,11 @@ import org.jrm.util.TimeUtils;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Class model for a "Point of Sale" system for exiting a garage
+ * @author Jared Mallas
+ * @version 1.0
+ */
 public class POSExit
 {
     private Boolean debug = true;
@@ -27,6 +32,11 @@ public class POSExit
         this.location = location;
     }
 
+    /**
+     * Generate a final bill / receipt for parking
+     * @param details Hash map containing relevant details like car ID, time in, time out, amount charged
+     * @return String representation of bill / receipt for display
+     */
     public String generateBill(HashMap<String, String> details)
     {
         String rString = new String();
@@ -52,6 +62,9 @@ public class POSExit
         return rString;
     }
 
+    /**
+     * Display a common 'banner" for POS system
+     */
     public void displayBanner()
     {
         for (int i = 1; i < 100; i++)
@@ -103,6 +116,9 @@ public class POSExit
         return bd;
     }
 
+    /**
+     * Start up simple POS exit program
+     */
     public void startUp()
     {
         while(!done)

@@ -7,6 +7,11 @@ import org.jrm.util.TimeUtils;
 
 import java.util.Date;
 
+/**
+ * Class model of a "Point of Sale" machine for entry into a parking garage
+ * @author Jared Mallas
+ * @version 1.0
+ */
 public class POSEntry
 {
     private Boolean debug = true;
@@ -19,7 +24,29 @@ public class POSEntry
     public POSEntry(Garage someGarage)
     {
         this.location = someGarage;
+    }
 
+    /**
+     * Display a common 'banner" for POS system
+     */
+    public void displayBanner()
+    {
+        System.out.println("Welcome to " + this.location.getName());
+        System.out.println("=========================");
+        System.out.println("\n");
+
+        System.out.println("1 - Enter / print ticket");
+        System.out.println("\n");
+        System.out.println("3 - Close garage");
+        System.out.println("\n");
+        System.out.printf("=> ");
+    }
+
+    /**
+     * Main method to run the simple loop of the parking entry POS
+     */
+    public void startUp()
+    {
         displayBanner();
 
         while(!done)
@@ -47,18 +74,4 @@ public class POSEntry
             }
         }
     }
-
-    public void displayBanner()
-    {
-        System.out.println("Welcome to " + this.location.getName());
-        System.out.println("=========================");
-        System.out.println("\n");
-
-        System.out.println("1 - Enter / print ticket");
-        System.out.println("\n");
-        System.out.println("3 - Close garage");
-        System.out.println("\n");
-        System.out.printf("=> ");
-    }
-
 }

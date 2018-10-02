@@ -6,6 +6,9 @@ import java.util.UUID;
 
 /**
  * Class model for a Parking ticket at a parking garage
+ * Tickets created with default constructor (and overloaded
+ * ParkingTicket(String sTimeIn) constructor) will remain unique
+ * by way of java.util.UUID
  * @author Jared Mallas
  * @version 1.0
  */

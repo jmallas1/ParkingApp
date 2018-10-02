@@ -10,5 +10,7 @@ public class GarageEntry
         Garage gar = new Garage("Jared's Garage");
 
         POSEntry pe = new POSEntry(gar);
+
+        pe.startUp();
     }
 }
