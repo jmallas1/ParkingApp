@@ -147,11 +147,14 @@ public class POSExit
             {
                 case 1:
                     billDetails = doTicketExit();
+                    break;
                 case 2:
                     billDetails = doLostTicket();
+                    break;
                 case 3:
                     location.closeGarage();
                     System.exit(0);
+                    break;
             }
 
             if(billDetails.get("charge") != "nil")
